@@ -52,7 +52,6 @@ def main():
         final_candidates = final_candidates.drop_duplicates(subset=['word'])
         final_candidates.sort_values(['rank', 'variance', 'goodness'], ascending=[True,True,False]).reset_index(drop=True)
 
-
         new_row = [
             " ".join(list(final_candidates.word)[:10]),
             " ".join(top_friends),
