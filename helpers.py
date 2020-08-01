@@ -8,25 +8,23 @@ from scipy.spatial.distance import squareform
 from scipy.spatial.distance import pdist
 
 CONSTANT = 4
-STATE = randint(1, 1000)
 
-def get_game_words(words_for_game):
+def get_game_words(words_for_game_df):
     # Get sample from dataframe
-    friend_series = words_for_game.sample(n=8, random_state=STATE)
+    friend_series = words_for_game_df.sample(n=8)
     # Drop so there are no duplicates
-    card_words = words_for_game.drop(friend_series.index)
-    # Convert to set
+    card_words = words_for_game_df.drop(friend_series.index)
     friends = [fr.lower() for fr in friend_series[0].tolist()]
 
-    foe_series = words_for_game.sample(n=9, random_state=STATE)
-    words_for_game = words_for_game.drop(foe_series.index)
+    foe_series = words_for_game_df.sample(n=9)
+    words_for_game_df = words_for_game_df.drop(foe_series.index)
     foes = [f.lower() for f in foe_series[0].tolist()]
 
-    neutral_series = words_for_game.sample(n=6, random_state=STATE)
-    words_for_game = words_for_game.drop(neutral_series.index)
+    neutral_series = words_for_game_df.sample(n=6)
+    words_for_game_df = words_for_game_df.drop(neutral_series.index)
     neutrals = [n.lower() for n in neutral_series[0].tolist()]
 
-    assassin_series = words_for_game.sample(n=1, random_state=STATE)
+    assassin_series = words_for_game_df.sample(n=1)
     assassin = [a.lower() for a in assassin_series[0].tolist()]
 
     board_words = friends + foes + neutrals + assassin
@@ -50,8 +48,11 @@ def get_top_friends(vectors, friends):
     if kn.knee > 1:
         num_friends_to_consider = kn.knee
     else:
-        num_friends_to_consider = 3
+        # Randomly make it 4 sometimes?
+        num_friends_to_consider = 2
     top_friends = sorted(data_dict, key=data_dict.get, reverse=False)[:num_friends_to_consider]
+    print(f'Friends: {friends}')
+    print(f'Top friends: {top_friends}')
     low_friends = set(friends) - set(top_friends)
     return top_friends, low_friends
 
@@ -80,7 +81,8 @@ def get_scores(row, vectors, **kwargs):
             assassin_minimax = min(assassin_dist) - max_friends_dist
             foes_minimax = min(foes_dist) - max_friends_dist
             neutrals_minimax = min(neutrals_dist) - max_friends_dist
-            variance = max_friends_dist - min_friends_dist
+            # Should this be absolute value?
+            variance = abs(max_friends_dist) - abs(min_friends_dist)
     return pd.Series([goodness, assassin_minimax, foes_minimax, neutrals_minimax, variance])
 
 def get_final_metrics(word, candidates, **kwargs):
@@ -95,7 +97,7 @@ def get_final_metrics(word, candidates, **kwargs):
         total_variance = total_variance + variance
         goodness = candidate_df[word_select].goodness.tolist()[0]
         total_goodness = total_goodness + goodness
-    return pd.Series([total_rank, total_variance, total_goodness])
+    return pd.Series([total_rank * 1.5, (total_variance/len(candidates)), (total_goodness/len(candidates))])
 
 def get_candidates_df(vectors, **kwargs):
     all_words = kwargs.get('all_words')
