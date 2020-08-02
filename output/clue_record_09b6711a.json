@@ -1,0 +1,96 @@
+{
+  "id": "09b6711a",
+  "game_id": "bda958a8",
+  "clues": [
+    {
+      "word": "phase",
+      "rank": 16.5,
+      "goodness": 0.23117756625377853,
+      "bad_minimax": -0.16418516989902857,
+      "frequency": 2052.0,
+      "neutrals_minimax": -0.1887673607541662,
+      "variance": 0.4039428121514816
+    },
+    {
+      "word": "process",
+      "rank": 28.5,
+      "goodness": 0.22362835611390022,
+      "bad_minimax": -0.16716780204710568,
+      "frequency": 194.0,
+      "neutrals_minimax": -0.21347836663748043,
+      "variance": 0.3862614677638303
+    },
+    {
+      "word": "dynamics",
+      "rank": 54.0,
+      "goodness": 0.20261144727692615,
+      "bad_minimax": -0.13149796013936998,
+      "frequency": 4993.0,
+      "neutrals_minimax": -0.1418635997275682,
+      "variance": 0.2744482464053975
+    },
+    {
+      "word": "phases",
+      "rank": 64.5,
+      "goodness": 0.2135656162047566,
+      "bad_minimax": -0.12730653454334298,
+      "frequency": 6027.0,
+      "neutrals_minimax": -0.1532793351007663,
+      "variance": 0.3879926546327412
+    },
+    {
+      "word": "cyclical",
+      "rank": 90.0,
+      "goodness": 0.21958333435027214,
+      "bad_minimax": -0.11474340601920079,
+      "frequency": 14910.0,
+      "neutrals_minimax": -0.0855162220471271,
+      "variance": 0.44991954421209907
+    },
+    {
+      "word": "period",
+      "rank": 96.0,
+      "goodness": 0.19939467302208957,
+      "bad_minimax": -0.20047013702817354,
+      "frequency": 480.0,
+      "neutrals_minimax": -0.19420694741869793,
+      "variance": 0.3754365579638785
+    },
+    {
+      "word": "dynamic",
+      "rank": 99.0,
+      "goodness": 0.19497087030233615,
+      "bad_minimax": -0.15037509588252332,
+      "frequency": 2238.0,
+      "neutrals_minimax": -0.20721565741493228,
+      "variance": 0.2726825049063334
+    },
+    {
+      "word": "mandate",
+      "rank": 100.5,
+      "goodness": 0.19857473281133373,
+      "bad_minimax": -0.17305404471462152,
+      "frequency": 5742.0,
+      "neutrals_minimax": -0.22286610667827023,
+      "variance": 0.3647550210700828
+    },
+    {
+      "word": "deceleration",
+      "rank": 103.5,
+      "goodness": 0.1908331657412585,
+      "bad_minimax": -0.1890595346559878,
+      "frequency": 20654.0,
+      "neutrals_minimax": -0.13909813394588713,
+      "variance": 0.3233198775391651
+    },
+    {
+      "word": "cyclic",
+      "rank": 115.5,
+      "goodness": 0.19064883752536574,
+      "bad_minimax": -0.19690457531370262,
+      "frequency": 12832.0,
+      "neutrals_minimax": -0.1430163356181182,
+      "variance": 0.4546185298854161
+    }
+  ]
+}

@@ -3,13 +3,14 @@ import pandas as pd
 from scipy import spatial
 from random import randint
 from kneed import KneeLocator
-# import nbconvert.filters.strings
 from scipy.spatial.distance import squareform
 from scipy.spatial.distance import pdist
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster, leaves_list, ward, optimal_leaf_ordering
 from sklearn.cluster import AgglomerativeClustering
 from matplotlib import pyplot as plt
 from statistics import mean
+import json
+import uuid
 
 # CONSTANT = 6
 
@@ -104,6 +105,9 @@ def get_final_metrics(word, candidates, **kwargs):
     total_rank = 0
     total_variance = 0
     total_goodness = 0
+    total_bad_minimax = 0
+    total_neutrals_minimax = 0
+    total_frequency = 0
     for candidate_df in candidates:
         word_select = candidate_df['word'] == word
         rank = candidate_df[word_select].index[0]
@@ -112,19 +116,107 @@ def get_final_metrics(word, candidates, **kwargs):
         total_variance = total_variance + variance
         goodness = candidate_df[word_select].goodness.iloc[0]
         total_goodness = total_goodness + goodness
+        bad_minimax = candidate_df[word_select].bad_minimax.iloc[0]
+        total_bad_minimax = total_bad_minimax + bad_minimax
+        neutrals_minimax = candidate_df[word_select].neutrals_minimax.iloc[0]
+        total_neutrals_minimax = total_neutrals_minimax + neutrals_minimax
+        frequency = candidate_df[word_select].frequency.iloc[0]
+        total_frequency = total_frequency + frequency
         # Multiply by 1.5 to favor the the high and penalize the low rank (lower number is higher rank)
-    return pd.Series([total_rank * 1.5, (total_variance/len(candidates)), (total_goodness/len(candidates))])
+    final_rank = total_rank * 1.5
+    num_candidates = len(candidates)
+    final_variance = total_variance / num_candidates
+    final_goodness = total_goodness / num_candidates
+    final_bad_minimax = total_bad_minimax / num_candidates
+    final_neutrals_minimax = total_neutrals_minimax / num_candidates
+    final_frequency = total_frequency / num_candidates
+    return pd.Series([final_rank, final_goodness, final_bad_minimax, final_frequency, final_neutrals_minimax, final_variance])
 
 def get_candidates_df(vectors, primary, **kwargs):
     words_to_consider = kwargs.get('words_to_consider')
     words_to_consider_frequencies = kwargs.get('words_to_consider_frequencies')
-    print(words_to_consider[:25])
-    print(words_to_consider_frequencies[:25])
     candidates = pd.DataFrame({'word': words_to_consider, 'frequency': words_to_consider_frequencies})
     candidates[['goodness', 'bad_minimax', 'neutrals_minimax', 'variance']] = candidates.apply(lambda row: get_scores(row, vectors, primary, **kwargs), axis=1)
     candidates.dropna(inplace=True)
     sort_by_columns = ['goodness', 'bad_minimax', 'frequency', 'neutrals_minimax']
     candidates = candidates.sort_values(sort_by_columns, ascending=[False for i in range(len(sort_by_columns))]).reset_index(drop=True)
-    print('candidates after sort:')
-    print(candidates)
     return candidates
+
+def create_records(final_candidates, **kwargs):
+    top_friends = kwargs.get('top_friends')
+    low_friends = kwargs.get('low_friends')
+    foes = kwargs.get('foes')
+    neutrals = kwargs.get('neutrals')
+    assassin = kwargs.get('assassin')
+
+    id_length = 8
+
+    game_id = str(uuid.uuid4())[:id_length]
+    clue_id = str(uuid.uuid4())[:id_length]
+
+    # Generate clue record
+    clue_record_output_path = f'./output/clues/clue_{clue_id}.json'
+    clue_record = {
+        'id': clue_id,
+        'game_id': game_id,
+        'clues': final_candidates.head(10).to_dict(orient='records')
+    }
+    with open(clue_record_output_path, 'w') as fp:
+        json.dump(clue_record, fp)
+
+    # Generate game record with formatted word dicts
+    top_friends_formatted = [
+        {
+            'id': str(uuid.uuid4())[:id_length],
+            'word': word,
+            'type': 'friend',
+            'is_top': True
+        }
+        for word in top_friends
+    ]
+
+    low_friends_formatted = [
+        {
+            'id': str(uuid.uuid4())[:id_length],
+            'word': word,
+            'type': 'friend',
+            'is_top': False
+        }
+        for word in low_friends
+    ]
+    foes_formatted = [
+        {
+            'id': str(uuid.uuid4())[:id_length],
+            'word': word,
+            'type': 'foe',
+            'is_top': None
+        }
+        for word in foes
+    ]
+    neutrals_formatted = [
+        {
+            'id': str(uuid.uuid4())[:id_length],
+            'word': word,
+            'type': 'neutral',
+            'is_top': None
+        }
+        for word in neutrals
+    ]
+    assassin_formatted = [
+        {
+            'id': str(uuid.uuid4())[:id_length],
+            'word': word,
+            'type': 'assassin',
+            'is_top': None
+        }
+        for word in assassin
+    ]
+
+    game_record_output_path = f'./output/game_record_{game_id}.json'
+    game_record = {
+        'id': game_id,
+        'clue_id': clue_id,
+        'words': top_friends_formatted + low_friends_formatted + foes_formatted + neutrals_formatted + assassin_formatted
+    }
+    with open(game_record_output_path, 'w') as fp:
+        json.dump(game_record, fp)
