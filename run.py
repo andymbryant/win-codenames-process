@@ -9,7 +9,7 @@ def main():
     # I should probably change it from assassin as the threshold - high friends?
     # Also no need to combine the DataFrame
     deep = True
-    num_iterations = 1
+    num_iterations = 6
 
     # Import Glove vectors
     glove_vectors = pd.read_pickle('./processing/data/glove_vectors.pkl')

@@ -24,7 +24,7 @@ def get_game_words(words_for_game_df):
     words_for_game_df = words_for_game_df.drop(foe_series.index)
     foes = [f.lower() for f in foe_series[0].tolist()]
 
-    neutral_series = words_for_game_df.sample(n=6)
+    neutral_series = words_for_game_df.sample(n=7)
     words_for_game_df = words_for_game_df.drop(neutral_series.index)
     neutrals = [n.lower() for n in neutral_series[0].tolist()]
 
