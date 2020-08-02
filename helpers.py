@@ -11,8 +11,7 @@ from matplotlib import pyplot as plt
 from statistics import mean
 import json
 import uuid
-
-# CONSTANT = 6
+from config import *
 
 def get_game_words(words_for_game_df):
     # Get sample from dataframe
@@ -46,9 +45,7 @@ def get_top_friends(vectors, friends):
         columns = friends,
         index = friends
     ).replace(to_replace=0, value=999)
-    # How much should this be? More will favor larger clusters.
-    MULT = 1.2
-    avg_dist = mean(pairwise_cos.min()) * MULT
+    avg_dist = mean(pairwise_cos.min()) * AVG_DIST_MULT
     Z = linkage(cos_data, method='complete', optimal_ordering=True)
     cos_indices = fcluster(Z, t=avg_dist, criterion='distance')
     np_friends = np.array(cos_indices)
@@ -57,6 +54,25 @@ def get_top_friends(vectors, friends):
 
     low_friends = set(friends) - set(top_friends)
     return top_friends, low_friends
+
+def get_words_dict():
+    words_for_game_df = pd.read_json('./processing/data/words_v2.json')
+    friends, foes, neutrals, assassin, board_words = get_game_words(words_for_game_df)
+    top_friends, low_friends = get_top_friends(glove_vectors, friends)
+
+    words_dict = {
+        'friends': friends,
+        'foes': foes,
+        'neutrals': neutrals,
+        'assassin': assassin,
+        'board_words': board_words,
+        'top_friends': top_friends,
+        'low_friends': low_friends,
+        'board_words': board_words,
+        'words_to_consider': all_words,
+        'words_to_consider_frequencies': [i for i in range(1, len(all_words) + 1)]
+    }
+    return words_dict
 
 def get_scores(row, vectors, primary, **kwargs):
     word = row.word
@@ -76,10 +92,8 @@ def get_scores(row, vectors, primary, **kwargs):
         return na_series
 
     # If first candidates_df (glove) then check for assassin distance
-    # If not, the assassin distance will be very different for the other models
+    # If too close to assasin, return na series
     assassin_dist = [distance(word, a, vectors) for a in assassin]
-    # Check if assassin distance is adequate, if not don't waste your time
-    # Acceptable ~.8
     if primary and assassin_dist[0] <= 0.8:
         return na_series
 
@@ -123,7 +137,7 @@ def get_final_metrics(word, candidates, **kwargs):
         frequency = candidate_df[word_select].frequency.iloc[0]
         total_frequency = total_frequency + frequency
         # Multiply by 1.5 to favor the the high and penalize the low rank (lower number is higher rank)
-    final_rank = total_rank * 1.5
+    final_rank = total_rank * RANK_MULT
     num_candidates = len(candidates)
     final_variance = total_variance / num_candidates
     final_goodness = total_goodness / num_candidates
@@ -138,9 +152,17 @@ def get_candidates_df(vectors, primary, **kwargs):
     candidates = pd.DataFrame({'word': words_to_consider, 'frequency': words_to_consider_frequencies})
     candidates[['goodness', 'bad_minimax', 'neutrals_minimax', 'variance']] = candidates.apply(lambda row: get_scores(row, vectors, primary, **kwargs), axis=1)
     candidates.dropna(inplace=True)
-    sort_by_columns = ['goodness', 'bad_minimax', 'frequency', 'neutrals_minimax']
-    candidates = candidates.sort_values(sort_by_columns, ascending=[False for i in range(len(sort_by_columns))]).reset_index(drop=True)
+    candidates = candidates.sort_values(PRIMARY_SORT_BY_COLUMNS, ascending=[False for i in range(len(PRIMARY_SORT_BY_COLUMNS))]).reset_index(drop=True)
     return candidates
+
+def get_final_candidates_df(all_candidates, top_candidate_words):
+    final_candidates = pd.DataFrame({'word': top_candidate_words})
+    print('starting get final metrics')
+    final_candidates[['rank', 'goodness', 'bad_minimax', 'frequency', 'neutrals_minimax', 'variance']] = final_candidates.word.apply(lambda word: get_final_metrics(word, all_candidates))
+    # final_candidates = final_candidates.drop_duplicates(subset=['word'])
+    # TODO Add svr prediction
+    final_candidates = final_candidates.sort_values(SECONDARY_SORT_BY_COLUMNS, ascending=[True,True,False]).reset_index(drop=True)
+    return final_candidates
 
 def create_records(final_candidates, **kwargs):
     top_friends = kwargs.get('top_friends')
@@ -212,7 +234,7 @@ def create_records(final_candidates, **kwargs):
         for word in assassin
     ]
 
-    game_record_output_path = f'./output/game_record_{game_id}.json'
+    game_record_output_path = f'./output/games/game_{game_id}.json'
     game_record = {
         'id': game_id,
         'clue_id': clue_id,
@@ -220,3 +242,20 @@ def create_records(final_candidates, **kwargs):
     }
     with open(game_record_output_path, 'w') as fp:
         json.dump(game_record, fp)
+
+def get_new_row(final_candidates, **kwargs):
+    new_row = [
+        " ".join(list(final_candidates.word)[:10]),
+        " ".join(kwargs.get('top_friends')),
+        " ".join(kwargs.get('low_friends')),
+        " ".join(kwargs.get('foes')),
+        " ".join(kwargs.get('neutrals')),
+        " ".join(kwargs.get('assassin'))
+    ]
+    return new_row
+
+def create_output(output_df):
+    now = datetime.now()
+    time_info = now.strftime("%m-%d-%H-%M")
+    output_path = f'./output/results/results_{time_info}.csv'
+    output_df.to_csv(output_path)

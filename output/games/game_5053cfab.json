@@ -1,0 +1,156 @@
+{
+  "id": "5053cfab",
+  "clue_id": "4e22019a",
+  "words": [
+    {
+      "id": "958f70c8",
+      "word": "knight",
+      "type": "friend",
+      "is_top": true
+    },
+    {
+      "id": "77a0a129",
+      "word": "slug",
+      "type": "friend",
+      "is_top": true
+    },
+    {
+      "id": "a0327e3d",
+      "word": "parachute",
+      "type": "friend",
+      "is_top": false
+    },
+    {
+      "id": "cf827252",
+      "word": "charge",
+      "type": "friend",
+      "is_top": false
+    },
+    {
+      "id": "2baa4c09",
+      "word": "pin",
+      "type": "friend",
+      "is_top": false
+    },
+    {
+      "id": "011061de",
+      "word": "microscope",
+      "type": "friend",
+      "is_top": false
+    },
+    {
+      "id": "e13e81a0",
+      "word": "suit",
+      "type": "friend",
+      "is_top": false
+    },
+    {
+      "id": "e144964d",
+      "word": "part",
+      "type": "friend",
+      "is_top": false
+    },
+    {
+      "id": "349c8de0",
+      "word": "princess",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "b16fb03f",
+      "word": "net",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "ccedd166",
+      "word": "microscope",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "ad8ae5ef",
+      "word": "cast",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "f3418d69",
+      "word": "alien",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "6718fbfb",
+      "word": "lead",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "51f53d9c",
+      "word": "green",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "db295411",
+      "word": "point",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "5bc3bf47",
+      "word": "horseshoe",
+      "type": "foe",
+      "is_top": null
+    },
+    {
+      "id": "2b67fd5e",
+      "word": "poison",
+      "type": "neutral",
+      "is_top": null
+    },
+    {
+      "id": "25cbe781",
+      "word": "genius",
+      "type": "neutral",
+      "is_top": null
+    },
+    {
+      "id": "f3d4fa14",
+      "word": "bat",
+      "type": "neutral",
+      "is_top": null
+    },
+    {
+      "id": "2bd3867b",
+      "word": "parachute",
+      "type": "neutral",
+      "is_top": null
+    },
+    {
+      "id": "10b2db76",
+      "word": "roulette",
+      "type": "neutral",
+      "is_top": null
+    },
+    {
+      "id": "07174011",
+      "word": "air",
+      "type": "neutral",
+      "is_top": null
+    },
+    {
+      "id": "ae052340",
+      "word": "giant",
+      "type": "neutral",
+      "is_top": null
+    },
+    {
+      "id": "66fe6d1f",
+      "word": "tooth",
+      "type": "assassin",
+      "is_top": null
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "id": "4e22019a",
+  "game_id": "5053cfab",
+  "clues": [
+    {
+      "word": "squire",
+      "rank": 4.5,
+      "goodness": 0.23444236260048748,
+      "bad_minimax": -0.2860175131686452,
+      "frequency": 22465.0,
+      "neutrals_minimax": -0.16287960055330122,
+      "variance": 0.5157528079341483
+    },
+    {
+      "word": "swordsman",
+      "rank": 25.5,
+      "goodness": 0.21389564533988492,
+      "bad_minimax": -0.31536523572923897,
+      "frequency": 23706.0,
+      "neutrals_minimax": -0.2701841256501388,
+      "variance": 0.4957270724461916
+    },
+    {
+      "word": "steed",
+      "rank": 28.5,
+      "goodness": 0.2196738136799324,
+      "bad_minimax": -0.30662156860378426,
+      "frequency": 21953.0,
+      "neutrals_minimax": -0.18646054135950843,
+      "variance": 0.5139472492170026
+    },
+    {
+      "word": "joust",
+      "rank": 34.5,
+      "goodness": 0.21075158858522744,
+      "bad_minimax": -0.18035510476433847,
+      "frequency": 27573.0,
+      "neutrals_minimax": -0.15821861991648148,
+      "variance": 0.35661361950279175
+    },
+    {
+      "word": "slayer",
+      "rank": 54.0,
+      "goodness": 0.2013791840150586,
+      "bad_minimax": -0.2769879749825282,
+      "frequency": 15848.0,
+      "neutrals_minimax": -0.2482112826765885,
+      "variance": 0.3745899276122218
+    },
+    {
+      "word": "brawler",
+      "rank": 72.0,
+      "goodness": 0.18860720194614647,
+      "bad_minimax": -0.18450711452626412,
+      "frequency": 25470.0,
+      "neutrals_minimax": -0.20450739460517534,
+      "variance": 0.27861251507216084
+    },
+    {
+      "word": "magnum",
+      "rank": 93.0,
+      "goodness": 0.18633673810502263,
+      "bad_minimax": -0.15342609206855917,
+      "frequency": 15287.0,
+      "neutrals_minimax": -0.2280786020539265,
+      "variance": 0.31114424178458394
+    },
+    {
+      "word": "matador",
+      "rank": 102.0,
+      "goodness": 0.18292088013005722,
+      "bad_minimax": -0.218890112953841,
+      "frequency": 26318.0,
+      "neutrals_minimax": -0.18634245060314217,
+      "variance": 0.354574350183902
+    },
+    {
+      "word": "raider",
+      "rank": 102.0,
+      "goodness": 0.19378520723675288,
+      "bad_minimax": -0.253394456133287,
+      "frequency": 18010.0,
+      "neutrals_minimax": -0.19309131889979758,
+      "variance": 0.3572579257989637
+    },
+    {
+      "word": "rook",
+      "rank": 127.5,
+      "goodness": 0.17374857858371795,
+      "bad_minimax": -0.2485558310420457,
+      "frequency": 22973.0,
+      "neutrals_minimax": -0.22686587828932456,
+      "variance": 0.4410014338349562
+    }
+  ]
+}
