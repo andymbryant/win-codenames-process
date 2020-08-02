@@ -10,7 +10,7 @@ def main():
     create_result_csv = True
     size = HIGH_SIZE if deep else LOW_SIZE
     # Number of games to be generated
-    num_games = 5
+    num_games = 3
 
     # Import Glove vectors
     glove_vectors = pd.read_pickle('./processing/data/glove_vectors.pkl')
@@ -19,9 +19,9 @@ def main():
         output_df = pd.DataFrame(columns=['top_clues', 'top_friends', 'low_friends', 'foes', 'neutrals', 'assassin'])
 
     for i in range(num_games):
-        print(f'Iteration: {i + 1}')
+        print(f'Generating game: {i + 1}')
         words_dict = get_words_dict(glove_vectors)
-        print('Start GloVe candidates')
+        print('Starting GloVe candidates...')
         glove_candidates = get_candidates_df(glove_vectors, True, **words_dict)
         top_candidate_words = glove_candidates.word.tolist()[:size]
         all_candidates = [glove_candidates]
@@ -30,9 +30,9 @@ def main():
             ft_vectors = pd.read_pickle('./processing/data/fasttext_vectors.pkl')
             words_dict['words_to_consider'] = top_candidate_words
             words_dict['words_to_consider_frequencies'] = [glove_candidates[glove_candidates.word == word].frequency.iloc[0] for word in top_candidate_words]
-            print('Start Google candidates')
+            print('Starting Google candidates...')
             google_candidates = get_candidates_df(google_vectors, False, **words_dict)
-            print('Start FT candidates')
+            print('Starting FT candidates...')
             ft_candidates = get_candidates_df(ft_vectors, False, **words_dict)
             top_glove_words = set(glove_candidates.word.tolist())
             top_google_words = set(google_candidates.word.tolist())
@@ -41,7 +41,7 @@ def main():
             top_candidate_words = list(top_glove_words.intersection(top_google_words, top_ft_words))
             all_candidates.extend([google_candidates, ft_candidates])
 
-        print('Start final candidates')
+        print('Merging all candidates...')
         final_candidates = get_final_candidates_df(all_candidates, top_candidate_words)
         create_records(final_candidates, **words_dict)
         # Add row to csv output (for posterity)

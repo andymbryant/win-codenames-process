@@ -1,13 +1,9 @@
 import numpy as np
 import pandas as pd
 from scipy import spatial
-from random import randint
-from kneed import KneeLocator
-from scipy.spatial.distance import squareform
-from scipy.spatial.distance import pdist
-from scipy.cluster.hierarchy import dendrogram, linkage, fcluster, leaves_list, ward, optimal_leaf_ordering
+from scipy.spatial.distance import squareform, pdist
+from scipy.cluster.hierarchy import linkage, fcluster
 from sklearn.cluster import AgglomerativeClustering
-from matplotlib import pyplot as plt
 from statistics import mean
 import json
 import uuid
@@ -160,7 +156,6 @@ def get_candidates_df(vectors, primary, **kwargs):
 
 def get_final_candidates_df(all_candidates, top_candidate_words):
     final_candidates = pd.DataFrame({'word': top_candidate_words})
-    print('starting get final metrics')
     final_candidates[['rank', 'goodness', 'bad_minimax', 'frequency', 'neutrals_minimax', 'variance']] = final_candidates.word.apply(lambda word: get_final_metrics(word, all_candidates))
     # final_candidates = final_candidates.drop_duplicates(subset=['word'])
     # TODO Add svr prediction
@@ -243,6 +238,7 @@ def create_records(final_candidates, **kwargs):
             'AVG_DIST_MULT': AVG_DIST_MULT,
             'RANK_MULT': RANK_MULT,
             'PRIMARY_SORT_BY_COLUMNS': PRIMARY_SORT_BY_COLUMNS,
+            'SECONDARY_SORT_BY_COLUMNS': SECONDARY_SORT_BY_COLUMNS,
             'HIGH_SIZE': HIGH_SIZE,
             'LOW_SIZE': LOW_SIZE,
             'ASSASSIN_CUTOFF': ASSASSIN_CUTOFF
