@@ -66,7 +66,7 @@ def main():
         print('starting get final metrics')
         final_candidates[['rank', 'variance', 'goodness']] = final_candidates.word.apply(lambda word: get_final_metrics(word, all_candidates))
         # final_candidates = final_candidates.drop_duplicates(subset=['word'])
-        final_candidates.sort_values(['rank', 'variance', 'goodness'], ascending=[True,True,False]).reset_index(drop=True)
+        final_candidates = final_candidates.sort_values(['rank', 'variance', 'goodness'], ascending=[True,True,False]).reset_index(drop=True)
         print('final candidates:')
         print(final_candidates)
         new_row = [
