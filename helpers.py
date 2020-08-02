@@ -11,6 +11,7 @@ from matplotlib import pyplot as plt
 from statistics import mean
 import json
 import uuid
+from datetime import datetime
 from config import *
 
 def get_game_words(words_for_game_df):
@@ -55,7 +56,9 @@ def get_top_friends(vectors, friends):
     low_friends = set(friends) - set(top_friends)
     return top_friends, low_friends
 
-def get_words_dict():
+def get_words_dict(glove_vectors):
+    # Get all words from glove vectors
+    all_words = list(glove_vectors.index.get_level_values(level=0))
     words_for_game_df = pd.read_json('./processing/data/words_v2.json')
     friends, foes, neutrals, assassin, board_words = get_game_words(words_for_game_df)
     top_friends, low_friends = get_top_friends(glove_vectors, friends)
@@ -94,7 +97,7 @@ def get_scores(row, vectors, primary, **kwargs):
     # If first candidates_df (glove) then check for assassin distance
     # If too close to assasin, return na series
     assassin_dist = [distance(word, a, vectors) for a in assassin]
-    if primary and assassin_dist[0] <= 0.8:
+    if primary and assassin_dist[0] <= ASSASSIN_CUTOFF:
         return na_series
 
     top_friends_dist = [distance(word, tf, vectors) for tf in top_friends]
@@ -170,9 +173,7 @@ def create_records(final_candidates, **kwargs):
     foes = kwargs.get('foes')
     neutrals = kwargs.get('neutrals')
     assassin = kwargs.get('assassin')
-
     id_length = 8
-
     game_id = str(uuid.uuid4())[:id_length]
     clue_id = str(uuid.uuid4())[:id_length]
 
@@ -238,6 +239,14 @@ def create_records(final_candidates, **kwargs):
     game_record = {
         'id': game_id,
         'clue_id': clue_id,
+        'process_config': {
+            'AVG_DIST_MULT': AVG_DIST_MULT,
+            'RANK_MULT': RANK_MULT,
+            'PRIMARY_SORT_BY_COLUMNS': PRIMARY_SORT_BY_COLUMNS,
+            'HIGH_SIZE': HIGH_SIZE,
+            'LOW_SIZE': LOW_SIZE,
+            'ASSASSIN_CUTOFF': ASSASSIN_CUTOFF
+        },
         'words': top_friends_formatted + low_friends_formatted + foes_formatted + neutrals_formatted + assassin_formatted
     }
     with open(game_record_output_path, 'w') as fp:

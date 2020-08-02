@@ -14,3 +14,6 @@ SECONDARY_SORT_BY_COLUMNS = ['rank', 'variance', 'goodness']
 
 HIGH_SIZE = 2000
 LOW_SIZE = 200
+
+# Assassin cutoff
+ASSASSIN_CUTOFF = 0.78
