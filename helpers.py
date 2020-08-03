@@ -162,75 +162,60 @@ def get_final_candidates_df(all_candidates, top_candidate_words):
     final_candidates = final_candidates.sort_values(SECONDARY_SORT_BY_COLUMNS, ascending=SECONDARY_SORT_ASCENDING).reset_index(drop=True)
     # Only return the top 5
     final_candidates = final_candidates.iloc[:5]
-    # Keep order as determined by ranking algorithm
-    final_candidates['order'] = range(1, len(final_candidates) + 1)
-    final_candidates['top_clue'] = final_candidates.order.apply(lambda x: True if x == 1 else False)
     return final_candidates
 
-def create_records(final_candidates, **kwargs):
+def create_game_record(final_candidates, **kwargs):
     top_friends = kwargs.get('top_friends')
     low_friends = kwargs.get('low_friends')
     foes = kwargs.get('foes')
     neutrals = kwargs.get('neutrals')
     assassin = kwargs.get('assassin')
-    id_length = 8
-    game_id = str(uuid.uuid4())[:id_length]
-    clue_id = str(uuid.uuid4())[:id_length]
-
-    # Generate clue record
-    clue_record_output_path = f'./output/clues/clue_{clue_id}.json'
-    clue_record = {
-        'id': clue_id,
-        'game_id': game_id,
-        'clues': final_candidates.head(10).to_dict(orient='records')
-    }
-    with open(clue_record_output_path, 'w') as fp:
-        json.dump(clue_record, fp)
+    game_id = str(uuid.uuid4())[:ID_LENGTH]
 
     # Generate game record with formatted word dicts
     top_friends_formatted = [
         {
-            'id': str(uuid.uuid4())[:id_length],
+            'id': str(uuid.uuid4())[:ID_LENGTH],
             'word': word,
             'type': 'friend',
-            'is_top': True
+            'is_top_friend': True
         }
         for word in top_friends
     ]
 
     low_friends_formatted = [
         {
-            'id': str(uuid.uuid4())[:id_length],
+            'id': str(uuid.uuid4())[:ID_LENGTH],
             'word': word,
             'type': 'friend',
-            'is_top': False
+            'is_top_friend': False
         }
         for word in low_friends
     ]
     foes_formatted = [
         {
-            'id': str(uuid.uuid4())[:id_length],
+            'id': str(uuid.uuid4())[:ID_LENGTH],
             'word': word,
             'type': 'foe',
-            'is_top': None
+            'is_top_friend': None
         }
         for word in foes
     ]
     neutrals_formatted = [
         {
-            'id': str(uuid.uuid4())[:id_length],
+            'id': str(uuid.uuid4())[:ID_LENGTH],
             'word': word,
             'type': 'neutral',
-            'is_top': None
+            'is_top_friend': None
         }
         for word in neutrals
     ]
     assassin_formatted = [
         {
-            'id': str(uuid.uuid4())[:id_length],
+            'id': str(uuid.uuid4())[:ID_LENGTH],
             'word': word,
             'type': 'assassin',
-            'is_top': None
+            'is_top_friend': None
         }
         for word in assassin
     ]
@@ -238,12 +223,14 @@ def create_records(final_candidates, **kwargs):
     game_record_output_path = f'./output/games/game_{game_id}.json'
     game_record = {
         'id': game_id,
-        'clue_id': clue_id,
+        'clues': final_candidates.head(10).to_dict(orient='records'),
         'process_config': {
             'AVG_DIST_MULT': AVG_DIST_MULT,
             'RANK_MULT': RANK_MULT,
             'PRIMARY_SORT_BY_COLUMNS': PRIMARY_SORT_BY_COLUMNS,
+            'PRIMARY_SORT_ASCENDING': PRIMARY_SORT_ASCENDING,
             'SECONDARY_SORT_BY_COLUMNS': SECONDARY_SORT_BY_COLUMNS,
+            'SECONDARY_SORT_ASCENDING': SECONDARY_SORT_ASCENDING,
             'HIGH_SIZE': HIGH_SIZE,
             'LOW_SIZE': LOW_SIZE,
             'ASSASSIN_CUTOFF': ASSASSIN_CUTOFF

@@ -1,10 +1,10 @@
 # Number to multiply the average distance threshold for clustering
 # Higher numbers result in less clusters of a larger clusters
-AVG_DIST_MULT = 1.2
+AVG_DIST_MULT = 1.15
 
 # Number to multiply the rank
 # Higher numbers favor the top words and penalize the lower words (a lower rank number is better)
-RANK_MULT = 1.5
+RANK_MULT = 1.25
 
 # Column order for ranking in the first sorting algorithm (when candidate dfs are first made)
 PRIMARY_SORT_BY_COLUMNS = ['goodness', 'bad_minimax', 'frequency', 'neutrals_minimax']
@@ -19,3 +19,5 @@ LOW_SIZE = 200
 
 # Assassin cutoff
 ASSASSIN_CUTOFF = 0.78
+
+ID_LENGTH = 8

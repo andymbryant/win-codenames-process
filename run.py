@@ -10,7 +10,7 @@ def main():
     create_result_csv = True
     size = HIGH_SIZE if deep else LOW_SIZE
     # Number of games to be generated
-    num_games = 100
+    num_games = 3
 
     # Import Glove vectors
     glove_vectors = pd.read_pickle('./processing/data/glove_vectors.pkl')
@@ -43,7 +43,7 @@ def main():
 
         print('Merging all candidates...')
         final_candidates = get_final_candidates_df(all_candidates, top_candidate_words)
-        create_records(final_candidates, **words_dict)
+        create_game_record(final_candidates, **words_dict)
         # Add row to csv output (for posterity)
         if create_result_csv:
             new_row = get_new_row(final_candidates, **words_dict)
