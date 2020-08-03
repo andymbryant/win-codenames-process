@@ -1,0 +1,96 @@
+{
+  "id": "07b46855",
+  "game_id": "13afd518",
+  "clues": [
+    {
+      "word": "groove",
+      "rank": 19.5,
+      "goodness": 0.21620953249882705,
+      "bad_minimax": -0.15893589207094416,
+      "frequency": 6279.0,
+      "neutrals_minimax": -0.23639056601140018,
+      "variance": 0.3126066882760209
+    },
+    {
+      "word": "putt",
+      "rank": 33.0,
+      "goodness": 0.18740163930341844,
+      "bad_minimax": -0.13697498781147635,
+      "frequency": 13638.0,
+      "neutrals_minimax": -0.1827093982150115,
+      "variance": 0.4038288934930773
+    },
+    {
+      "word": "record",
+      "rank": 34.5,
+      "goodness": 0.19971614475435037,
+      "bad_minimax": -0.175885985080852,
+      "frequency": 487.0,
+      "neutrals_minimax": -0.19499269540486494,
+      "variance": 0.4639217959707606
+    },
+    {
+      "word": "digging",
+      "rank": 42.0,
+      "goodness": 0.17974851118040677,
+      "bad_minimax": -0.11953267223539092,
+      "frequency": 5691.0,
+      "neutrals_minimax": -0.2906776089684032,
+      "variance": 0.2828271617364187
+    },
+    {
+      "word": "downhill",
+      "rank": 52.5,
+      "goodness": 0.17765305965439615,
+      "bad_minimax": -0.2391391502414738,
+      "frequency": 7840.0,
+      "neutrals_minimax": -0.25193878928284763,
+      "variance": 0.3123236086703602
+    },
+    {
+      "word": "straightaway",
+      "rank": 73.5,
+      "goodness": 0.18073815718471176,
+      "bad_minimax": -0.20823650125100446,
+      "frequency": 21401.0,
+      "neutrals_minimax": -0.3140806353052138,
+      "variance": 0.3413134528188236
+    },
+    {
+      "word": "infield",
+      "rank": 75.0,
+      "goodness": 0.16977339234222022,
+      "bad_minimax": -0.169556475608445,
+      "frequency": 13594.0,
+      "neutrals_minimax": -0.32716025406150956,
+      "variance": 0.2992289792189012
+    },
+    {
+      "word": "dug",
+      "rank": 88.5,
+      "goodness": 0.16628686084366096,
+      "bad_minimax": -0.13185146818126425,
+      "frequency": 7180.0,
+      "neutrals_minimax": -0.2825227800523213,
+      "variance": 0.33614227308429073
+    },
+    {
+      "word": "plugging",
+      "rank": 90.0,
+      "goodness": 0.16962103537169435,
+      "bad_minimax": -0.19331221112013156,
+      "frequency": 11588.0,
+      "neutrals_minimax": -0.28720161152857343,
+      "variance": 0.37271873339176037
+    },
+    {
+      "word": "mile",
+      "rank": 93.0,
+      "goodness": 0.1659619920082013,
+      "bad_minimax": -0.1750021722068674,
+      "frequency": 2071.0,
+      "neutrals_minimax": -0.23743332673324466,
+      "variance": 0.27676135836485527
+    }
+  ]
+}
