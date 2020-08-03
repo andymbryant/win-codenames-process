@@ -10,7 +10,7 @@ def main():
     create_result_csv = True
     size = HIGH_SIZE if deep else LOW_SIZE
     # Number of games to be generated
-    num_games = 60
+    num_games = 100
 
     # Import Glove vectors
     glove_vectors = pd.read_pickle('./processing/data/glove_vectors.pkl')

@@ -151,7 +151,7 @@ def get_candidates_df(vectors, primary, **kwargs):
     candidates = pd.DataFrame({'word': words_to_consider, 'frequency': words_to_consider_frequencies})
     candidates[['goodness', 'bad_minimax', 'neutrals_minimax', 'variance']] = candidates.apply(lambda row: get_scores(row, vectors, primary, **kwargs), axis=1)
     candidates.dropna(inplace=True)
-    candidates = candidates.sort_values(PRIMARY_SORT_BY_COLUMNS, ascending=[False for i in range(len(PRIMARY_SORT_BY_COLUMNS))]).reset_index(drop=True)
+    candidates = candidates.sort_values(PRIMARY_SORT_BY_COLUMNS, ascending=PRIMARY_SORT_ASCENDING).reset_index(drop=True)
     return candidates
 
 def get_final_candidates_df(all_candidates, top_candidate_words):
@@ -159,7 +159,12 @@ def get_final_candidates_df(all_candidates, top_candidate_words):
     final_candidates[['rank', 'goodness', 'bad_minimax', 'frequency', 'neutrals_minimax', 'variance']] = final_candidates.word.apply(lambda word: get_final_metrics(word, all_candidates))
     # final_candidates = final_candidates.drop_duplicates(subset=['word'])
     # TODO Add svr prediction
-    final_candidates = final_candidates.sort_values(SECONDARY_SORT_BY_COLUMNS, ascending=[True,True,False]).reset_index(drop=True)
+    final_candidates = final_candidates.sort_values(SECONDARY_SORT_BY_COLUMNS, ascending=SECONDARY_SORT_ASCENDING).reset_index(drop=True)
+    # Only return the top 5
+    final_candidates = final_candidates.iloc[:5]
+    # Keep order as determined by ranking algorithm
+    final_candidates['order'] = range(1, len(final_candidates) + 1)
+    final_candidates['top_clue'] = final_candidates.order.apply(lambda x: True if x == 1 else False)
     return final_candidates
 
 def create_records(final_candidates, **kwargs):

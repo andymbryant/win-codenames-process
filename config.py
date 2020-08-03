@@ -8,9 +8,11 @@ RANK_MULT = 1.5
 
 # Column order for ranking in the first sorting algorithm (when candidate dfs are first made)
 PRIMARY_SORT_BY_COLUMNS = ['goodness', 'bad_minimax', 'frequency', 'neutrals_minimax']
+PRIMARY_SORT_ASCENDING = [False for i in range(len(PRIMARY_SORT_BY_COLUMNS))]
 
 # Column order for ranking in the secondary sorting algorithm (when candidate dfs are merged)
 SECONDARY_SORT_BY_COLUMNS = ['rank', 'variance', 'goodness']
+SECONDARY_SORT_ASCENDING = [True,False,False]
 
 HIGH_SIZE = 2000
 LOW_SIZE = 200
