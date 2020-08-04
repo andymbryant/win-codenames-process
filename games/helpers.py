@@ -11,6 +11,7 @@ from datetime import datetime
 from config import *
 
 def get_game_words(words_for_game_df):
+    '''Samples from words_for_game_df to generate and categorize all of the words for the game.'''
     # Get sample from dataframe
     friend_series = words_for_game_df.sample(n=8)
     # Drop so there are no duplicates
@@ -32,9 +33,12 @@ def get_game_words(words_for_game_df):
     return friends, foes, neutrals, assassin, board_words
 
 def distance(source, target, vectors):
+    '''Calculate cosine distance for source and target words using a particular embedding type.'''
     return spatial.distance.cosine(vectors.loc[source].to_numpy(), vectors.loc[target].to_numpy())
 
 def get_top_friends(vectors, friends):
+    '''Clusters friend words using distance values calculated with a particular embedding type.
+    Returns the closest sequence of friend words as top_friends and the rest as low_friends.'''
     data = np.array([vectors.loc[word].to_numpy() for word in friends])
     cos_data = pdist(data, metric='cosine')
     pairwise_cos = pd.DataFrame(
@@ -48,12 +52,11 @@ def get_top_friends(vectors, friends):
     np_friends = np.array(cos_indices)
     indices = np.where(np_friends == 1)[0]
     top_friends = [friends[i] for i in indices]
-
     low_friends = set(friends) - set(top_friends)
     return top_friends, low_friends
 
 def get_words_dict(glove_vectors):
-    # Get all words from glove vectors
+    '''Creates a dictionary of words by category for use throughout the game.'''
     all_words = list(glove_vectors.index.get_level_values(level=0))
     words_for_game_df = pd.read_json(f'{VECTORS_OUTPUT_PATH}/words_v2.json')
     friends, foes, neutrals, assassin, board_words = get_game_words(words_for_game_df)
@@ -74,6 +77,8 @@ def get_words_dict(glove_vectors):
     return words_dict
 
 def get_scores(row, vectors, primary, **kwargs):
+    '''Calculates various metrics for use in the candidates_df, primarily using distance values.
+    Returns Pandas series.'''
     word = row.word
     friends = kwargs.get('friends')
     board_words = kwargs.get('board_words')
@@ -87,6 +92,8 @@ def get_scores(row, vectors, primary, **kwargs):
     goodness = assassin_dist = bad_minimax = neutrals_minimax = variance = np.nan
     na_series = pd.Series([goodness, bad_minimax, neutrals_minimax, variance])
 
+    # If lowercase form of word is in a board_word or vice versa, return the na series rather than calculate
+    # Using a word that's on the board is against the rules
     if word.lower() in board_words or any([bw in word.lower() for bw in board_words]):
         return na_series
 
@@ -103,24 +110,25 @@ def get_scores(row, vectors, primary, **kwargs):
     neutrals_dist = [distance(word, n, vectors) for n in neutrals]
     bad_dist = foes_dist + assassin_dist
     goodness = (sum(bad_dist)/len(bad_dist)) - (sum(top_friends_dist)/len(top_friends_dist))
-    # OLD WAY OF CALCULATING GOODNESS
-    # goodness = sum(foes_dist + assassin_dist) - CONSTANT * sum(top_friends_dist)
     friends_dist = top_friends_dist + low_friends_dist
     min_friends_dist = min(friends_dist)
     max_friends_dist = max(friends_dist)
+
     bad_minimax = min(bad_dist) - max_friends_dist
     neutrals_minimax = min(neutrals_dist) - max_friends_dist
-    # Should this be absolute value?
     variance = abs(max_friends_dist) - abs(min_friends_dist)
     return pd.Series([goodness, bad_minimax, neutrals_minimax, variance])
 
 def get_final_metrics(word, candidates, **kwargs):
+    '''Calculates final metrics using the values from all candidate dataframes.
+    Returns Pandas series.'''
     total_rank = 0
     total_variance = 0
     total_goodness = 0
     total_bad_minimax = 0
     total_neutrals_minimax = 0
     total_frequency = 0
+    # Loop through candidate dataframes, calculate metrics, and merge them into a single series
     for candidate_df in candidates:
         word_select = candidate_df['word'] == word
         rank = candidate_df[word_select].index[0]
@@ -220,7 +228,6 @@ def create_game_record(final_candidates, **kwargs):
         for word in assassin
     ]
 
-    game_record_output_path = f'./output/games/game_{game_id}.json'
     game_record = {
         'id': game_id,
         'clues': final_candidates.head(10).to_dict(orient='records'),
@@ -231,12 +238,15 @@ def create_game_record(final_candidates, **kwargs):
             'PRIMARY_SORT_ASCENDING': PRIMARY_SORT_ASCENDING,
             'SECONDARY_SORT_BY_COLUMNS': SECONDARY_SORT_BY_COLUMNS,
             'SECONDARY_SORT_ASCENDING': SECONDARY_SORT_ASCENDING,
+            'SIZE': SIZE,
             'HIGH_SIZE': HIGH_SIZE,
             'LOW_SIZE': LOW_SIZE,
-            'ASSASSIN_CUTOFF': ASSASSIN_CUTOFF
+            'ASSASSIN_CUTOFF': ASSASSIN_CUTOFF,
+            'DEEP': DEEP
         },
         'words': top_friends_formatted + low_friends_formatted + foes_formatted + neutrals_formatted + assassin_formatted
     }
+    game_record_output_path = f'./games/output/games_json/game_{game_id}.json'
     with open(game_record_output_path, 'w') as fp:
         json.dump(game_record, fp)
 
@@ -254,5 +264,5 @@ def get_new_row(final_candidates, **kwargs):
 def create_output(output_df):
     now = datetime.now()
     time_info = now.strftime("%m-%d-%H-%M")
-    output_path = f'./output/results/results_{time_info}.csv'
+    output_path = f'./games/output/results/results_{time_info}.csv'
     output_df.to_csv(output_path)

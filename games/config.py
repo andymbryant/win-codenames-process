@@ -23,4 +23,8 @@ ASSASSIN_CUTOFF = 0.78
 
 ID_LENGTH = 8
 
-VECTORS_OUTPUT_PATH = vectors_output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'vectors/output'))
+VECTORS_OUTPUT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'vectors/output'))
+
+DEEP = True
+SIZE = HIGH_SIZE if deep else LOW_SIZE
+

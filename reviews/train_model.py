@@ -4,6 +4,10 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from datetime import datetime
+from bson import json_util
+import pickle
+import json
 import numpy as np
 import pymongo
 import os
@@ -11,7 +15,6 @@ import pandas as pd
 import pickle
 from dotenv import load_dotenv
 from pymongo import MongoClient
-
 load_dotenv()
 
 username = os.getenv('MONGO_USERNAME')
@@ -29,6 +32,13 @@ y_column = [y_var]
 all_columns = X_columns + y_column
 output = pd.DataFrame(columns=all_columns)
 all_reviews = [review for review in db.reviews.find()]
+
+now = datetime.now()
+time_info = now.strftime("%m-%d-%H-%M")
+json_filepath = f'./output/reviews_pkl/reviews_{time_info}.pkl'
+with open(json_filepath, 'wb') as outfile:
+    pickle.dump(all_reviews, outfile)
+
 print(f'{len(all_reviews)} reviews found...')
 
 for review in all_reviews:
@@ -54,6 +64,7 @@ model.fit(X_train, y_train)
 Pipeline(steps=[('standardscaler', StandardScaler()), ('svr', SVR(epsilon=0.2))])
 
 y_pred = model.predict(X_test)
+print(f'Predictions: {y_pred}')
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 

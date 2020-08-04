@@ -1,16 +1,14 @@
 import pandas as pd
-from config import HIGH_SIZE, LOW_SIZE, VECTORS_OUTPUT_PATH
+from config import SIZE, VECTORS_OUTPUT_PATH, DEEP
 from helpers import *
 
 def main():
     # If True, GloVe Google and FT vectors will be used with a larger group of words
     # If False, only GloVe vectors will be used on a smaller subset of words
-    deep = True
     # If True a result csv will be created
     create_result_csv = True
-    size = HIGH_SIZE if deep else LOW_SIZE
     # Number of games to be generated
-    num_games = 3
+    num_games = 100
 
     # Import Glove vectors
     glove_vectors = pd.read_pickle(f'{VECTORS_OUTPUT_PATH}/glove_vectors.pkl')
@@ -25,7 +23,7 @@ def main():
         glove_candidates = get_candidates_df(glove_vectors, True, **words_dict)
         top_candidate_words = glove_candidates.word.tolist()[:size]
         all_candidates = [glove_candidates]
-        if deep:
+        if DEEP:
             google_vectors = pd.read_pickle(f'{VECTORS_OUTPUT_PATH}/google_vectors.pkl')
             ft_vectors = pd.read_pickle(f'{VECTORS_OUTPUT_PATH}/fasttext_vectors.pkl')
             words_dict['words_to_consider'] = top_candidate_words
@@ -50,7 +48,7 @@ def main():
             output_df.loc[i] = new_row
 
     if create_result_csv:
-            # Initialize output dataframe for storing results
+        # Initialize output dataframe for storing results
         create_output(output_df)
 
 if __name__ == '__main__':
