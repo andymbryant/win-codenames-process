@@ -3,8 +3,6 @@ from config import SIZE, VECTORS_OUTPUT_PATH, DEEP
 from helpers import *
 
 def main():
-    # If True, GloVe Google and FT vectors will be used with a larger group of words
-    # If False, only GloVe vectors will be used on a smaller subset of words
     # If True a result csv will be created
     create_result_csv = True
     # Number of games to be generated
@@ -19,9 +17,11 @@ def main():
     for i in range(num_games):
         print(f'Generating game: {i + 1}')
         words_dict = get_words_dict(glove_vectors)
+        print(words_dict['friends'])
+        print(words_dict['foes'])
         print('Starting GloVe candidates...')
         glove_candidates = get_candidates_df(glove_vectors, True, **words_dict)
-        top_candidate_words = glove_candidates.word.tolist()[:size]
+        top_candidate_words = glove_candidates.word.tolist()[:SIZE]
         all_candidates = [glove_candidates]
         if DEEP:
             google_vectors = pd.read_pickle(f'{VECTORS_OUTPUT_PATH}/google_vectors.pkl')

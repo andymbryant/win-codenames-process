@@ -25,6 +25,8 @@ ID_LENGTH = 8
 
 VECTORS_OUTPUT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'vectors/output'))
 
+# If True, GloVe Google and FT vectors will be used with a larger group of words
+# If False, only GloVe vectors will be used on a smaller subset of words
 DEEP = True
-SIZE = HIGH_SIZE if deep else LOW_SIZE
+SIZE = HIGH_SIZE if DEEP else LOW_SIZE
 

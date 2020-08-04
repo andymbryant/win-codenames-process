@@ -5,6 +5,7 @@ from scipy.spatial.distance import squareform, pdist
 from scipy.cluster.hierarchy import linkage, fcluster
 from sklearn.cluster import AgglomerativeClustering
 from statistics import mean
+from random import randint
 import json
 import uuid
 from datetime import datetime
@@ -12,13 +13,17 @@ from config import *
 
 def get_game_words(words_for_game_df):
     '''Samples from words_for_game_df to generate and categorize all of the words for the game.'''
+
+    split = randint(0,1)
+    n_friends = 8 if split == 1 else 9
+    n_foes = 9 if n_friends == 8 else 8
     # Get sample from dataframe
-    friend_series = words_for_game_df.sample(n=8)
+    friend_series = words_for_game_df.sample(n=n_friends)
     # Drop so there are no duplicates
     card_words = words_for_game_df.drop(friend_series.index)
     friends = [fr.lower() for fr in friend_series[0].tolist()]
 
-    foe_series = words_for_game_df.sample(n=9)
+    foe_series = words_for_game_df.sample(n=n_foes)
     words_for_game_df = words_for_game_df.drop(foe_series.index)
     foes = [f.lower() for f in foe_series[0].tolist()]
 
@@ -60,6 +65,12 @@ def get_words_dict(glove_vectors):
     all_words = list(glove_vectors.index.get_level_values(level=0))
     words_for_game_df = pd.read_json(f'{VECTORS_OUTPUT_PATH}/words_v2.json')
     friends, foes, neutrals, assassin, board_words = get_game_words(words_for_game_df)
+    board_words_dup = [word.lower() for word in board_words]
+    # Check for case-insensitive duplicates
+    if len(board_words_dup) != len(set(board_words_dup)):
+        print('DUPLICATE WORDS FOUND')
+        words_for_game_df = pd.read_json(f'{VECTORS_OUTPUT_PATH}/words_v2.json')
+        friends, foes, neutrals, assassin, board_words = get_game_words(words_for_game_df)
     top_friends, low_friends = get_top_friends(glove_vectors, friends)
 
     words_dict = {
@@ -246,7 +257,7 @@ def create_game_record(final_candidates, **kwargs):
         },
         'words': top_friends_formatted + low_friends_formatted + foes_formatted + neutrals_formatted + assassin_formatted
     }
-    game_record_output_path = f'./games/output/games_json/game_{game_id}.json'
+    game_record_output_path = f'./output/games_json/game_{game_id}.json'
     with open(game_record_output_path, 'w') as fp:
         json.dump(game_record, fp)
 
@@ -264,5 +275,5 @@ def get_new_row(final_candidates, **kwargs):
 def create_output(output_df):
     now = datetime.now()
     time_info = now.strftime("%m-%d-%H-%M")
-    output_path = f'./games/output/results/results_{time_info}.csv'
+    output_path = f'./output/results/results_{time_info}.csv'
     output_df.to_csv(output_path)

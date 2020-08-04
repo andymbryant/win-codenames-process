@@ -1,0 +1,233 @@
+{
+  "id": "9750d70f",
+  "clues": [
+    {
+      "word": "zinc",
+      "rank": 20.0,
+      "goodness": 0.2516904186104185,
+      "bad_minimax": -0.15850303636747498,
+      "frequency": 7200.0,
+      "neutrals_minimax": -0.21277555168320042,
+      "variance": 0.6729811953093602
+    },
+    {
+      "word": "molybdenum",
+      "rank": 25.0,
+      "goodness": 0.2575142900243255,
+      "bad_minimax": -0.1624821248742011,
+      "frequency": 20430.0,
+      "neutrals_minimax": -0.22993683263106238,
+      "variance": 0.628934221282357
+    },
+    {
+      "word": "metallurgical",
+      "rank": 36.25,
+      "goodness": 0.25200645402715494,
+      "bad_minimax": -0.18776670625749503,
+      "frequency": 21443.0,
+      "neutrals_minimax": -0.19310110747298903,
+      "variance": 0.44208398930516735
+    },
+    {
+      "word": "manganese",
+      "rank": 57.5,
+      "goodness": 0.23636077198033545,
+      "bad_minimax": -0.15534907570376996,
+      "frequency": 15568.0,
+      "neutrals_minimax": -0.2399970932511315,
+      "variance": 0.6076518801229135
+    },
+    {
+      "word": "soldering",
+      "rank": 100.0,
+      "goodness": 0.21730153089244053,
+      "bad_minimax": -0.23049421749688115,
+      "frequency": 12956.0,
+      "neutrals_minimax": -0.2747325431076334,
+      "variance": 0.40588008931831515
+    }
+  ],
+  "process_config": {
+    "AVG_DIST_MULT": 1.15,
+    "RANK_MULT": 1.25,
+    "PRIMARY_SORT_BY_COLUMNS": [
+      "goodness",
+      "bad_minimax",
+      "frequency",
+      "neutrals_minimax"
+    ],
+    "PRIMARY_SORT_ASCENDING": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "SECONDARY_SORT_BY_COLUMNS": [
+      "rank",
+      "variance",
+      "goodness"
+    ],
+    "SECONDARY_SORT_ASCENDING": [
+      true,
+      false,
+      false
+    ],
+    "SIZE": 2000,
+    "HIGH_SIZE": 2000,
+    "LOW_SIZE": 200,
+    "ASSASSIN_CUTOFF": 0.78,
+    "DEEP": true
+  },
+  "words": [
+    {
+      "id": "5aa247fd",
+      "word": "washer",
+      "type": "friend",
+      "is_top_friend": true
+    },
+    {
+      "id": "ae2387a4",
+      "word": "drill",
+      "type": "friend",
+      "is_top_friend": true
+    },
+    {
+      "id": "f2ddce13",
+      "word": "copper",
+      "type": "friend",
+      "is_top_friend": true
+    },
+    {
+      "id": "6d95e8a1",
+      "word": "platypus",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "7f4f7094",
+      "word": "jam",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "d5244a21",
+      "word": "hand",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "9ba0fe90",
+      "word": "wake",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "34532db2",
+      "word": "buffalo",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "2be8d489",
+      "word": "pupil",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "573865b7",
+      "word": "helicopter",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "3849796b",
+      "word": "thumb",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "89414b18",
+      "word": "field",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "78909b7e",
+      "word": "switch",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "56763a90",
+      "word": "chick",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "c0755c03",
+      "word": "cover",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "fd13dc7f",
+      "word": "spot",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "2b7630d9",
+      "word": "button",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "0f592365",
+      "word": "bugle",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "84ede854",
+      "word": "needle",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "cfef0775",
+      "word": "rock",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "69cdf3b0",
+      "word": "ambulance",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "be71cae6",
+      "word": "shark",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "60c6331b",
+      "word": "tail",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "d11c0e74",
+      "word": "cliff",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "f395ba6e",
+      "word": "row",
+      "type": "assassin",
+      "is_top_friend": null
+    }
+  ]
+}
