@@ -6,14 +6,15 @@ from scipy.cluster.hierarchy import linkage, fcluster
 from sklearn.cluster import AgglomerativeClustering
 from statistics import mean
 from random import randint
+from joblib import load
 import json
+import glob
 import uuid
 from datetime import datetime
 from config import *
 
 def get_game_words(words_for_game_df):
     '''Samples from words_for_game_df to generate and categorize all of the words for the game.'''
-
     split = randint(0,1)
     n_friends = 8 if split == 1 else 9
     n_foes = 9 if n_friends == 8 else 8
@@ -173,15 +174,33 @@ def get_candidates_df(vectors, primary, **kwargs):
     candidates = candidates.sort_values(PRIMARY_SORT_BY_COLUMNS, ascending=PRIMARY_SORT_ASCENDING).reset_index(drop=True)
     return candidates
 
+def get_model_prediction(row, model):
+    X_columns = ['rank', 'goodness', 'bad_minimax', 'frequency', 'neutrals_minimax', 'variance']
+    X = row[X_columns].to_numpy().reshape(1,-1)
+    y_pred = model.predict(X)[0]
+    return y_pred
+
 def get_final_candidates_df(all_candidates, top_candidate_words):
     final_candidates = pd.DataFrame({'word': top_candidate_words})
     final_candidates[['rank', 'goodness', 'bad_minimax', 'frequency', 'neutrals_minimax', 'variance']] = final_candidates.word.apply(lambda word: get_final_metrics(word, all_candidates))
     # final_candidates = final_candidates.drop_duplicates(subset=['word'])
+    final_candidates = final_candidates.sort_values(SECONDARY_SORT_BY_COLUMNS, ascending=SECONDARY_SORT_ASCENDING)
+
     # TODO Add svr prediction
-    final_candidates = final_candidates.sort_values(SECONDARY_SORT_BY_COLUMNS, ascending=SECONDARY_SORT_ASCENDING).reset_index(drop=True)
+    if USE_MODEL_PREDICTIONS:
+        final_candidates = final_candidates.iloc[:5]
+        print('FC before model predict')
+        print(final_candidates.head(10))
+        # list_of_files = glob.glob('../reviews/output/models/*')
+        # latest_file = max(list_of_files, key=os.path.getctime)
+        # model = load(latest_file)
+        model = load('../reviews/output/models/svr_08-05-22-37.joblib')
+        final_candidates['model_prediction'] = final_candidates.apply(lambda row: get_model_prediction(row, model), axis=1)
+        final_candidates = final_candidates.sort_values(['model_prediction'], ascending=[False]).reset_index(drop=True)
+        print('FC after model predict')
+        print(final_candidates.head(10))
     # Only return the top 5
-    final_candidates = final_candidates.iloc[:5]
-    return final_candidates
+    return final_candidates.iloc[:5]
 
 def create_game_record(final_candidates, **kwargs):
     top_friends = kwargs.get('top_friends')

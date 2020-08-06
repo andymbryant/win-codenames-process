@@ -17,8 +17,10 @@ def main():
     for i in range(num_games):
         print(f'Generating game: {i + 1}')
         words_dict = get_words_dict(glove_vectors)
-        print(words_dict['friends'])
-        print(words_dict['foes'])
+        print(words_dict['top_friends'])
+        print(words_dict['assassin'])
+        # print(words_dict['friends'])
+        # print(words_dict['foes'])
         print('Starting GloVe candidates...')
         glove_candidates = get_candidates_df(glove_vectors, True, **words_dict)
         top_candidate_words = glove_candidates.word.tolist()[:SIZE]

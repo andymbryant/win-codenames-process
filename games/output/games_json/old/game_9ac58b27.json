@@ -1,0 +1,233 @@
+{
+  "id": "9ac58b27",
+  "clues": [
+    {
+      "word": "honk",
+      "rank": 5.0,
+      "goodness": 0.2711457631362211,
+      "bad_minimax": -0.16491122887950918,
+      "frequency": 22624.0,
+      "neutrals_minimax": -0.23920833343372416,
+      "variance": 0.4708634386120194
+    },
+    {
+      "word": "toot",
+      "rank": 13.75,
+      "goodness": 0.2834911384981092,
+      "bad_minimax": -0.15139240879291746,
+      "frequency": 21752.0,
+      "neutrals_minimax": -0.19159106797402348,
+      "variance": 0.454986188100412
+    },
+    {
+      "word": "antler",
+      "rank": 16.25,
+      "goodness": 0.25585758044148804,
+      "bad_minimax": -0.15891633805421743,
+      "frequency": 20486.0,
+      "neutrals_minimax": -0.23856332385602275,
+      "variance": 0.3620417298973712
+    },
+    {
+      "word": "deer",
+      "rank": 22.5,
+      "goodness": 0.2356768032551344,
+      "bad_minimax": -0.0997844009677407,
+      "frequency": 4251.0,
+      "neutrals_minimax": -0.15773770057114878,
+      "variance": 0.33220674685139034
+    },
+    {
+      "word": "doe",
+      "rank": 30.0,
+      "goodness": 0.23188522162937983,
+      "bad_minimax": -0.14612055096641643,
+      "frequency": 12136.0,
+      "neutrals_minimax": -0.2178438772038719,
+      "variance": 0.4102305240835777
+    }
+  ],
+  "process_config": {
+    "AVG_DIST_MULT": 1.15,
+    "RANK_MULT": 1.25,
+    "PRIMARY_SORT_BY_COLUMNS": [
+      "goodness",
+      "bad_minimax",
+      "frequency",
+      "neutrals_minimax"
+    ],
+    "PRIMARY_SORT_ASCENDING": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "SECONDARY_SORT_BY_COLUMNS": [
+      "rank",
+      "variance",
+      "goodness"
+    ],
+    "SECONDARY_SORT_ASCENDING": [
+      true,
+      false,
+      false
+    ],
+    "SIZE": 2000,
+    "HIGH_SIZE": 2000,
+    "LOW_SIZE": 200,
+    "ASSASSIN_CUTOFF": 0.78,
+    "DEEP": true
+  },
+  "words": [
+    {
+      "id": "b7ac4f91",
+      "word": "horn",
+      "type": "friend",
+      "is_top_friend": true
+    },
+    {
+      "id": "03776d43",
+      "word": "buck",
+      "type": "friend",
+      "is_top_friend": true
+    },
+    {
+      "id": "8e9f024a",
+      "word": "church",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "9f64d31a",
+      "word": "trip",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "e14a237e",
+      "word": "mail",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "f0ea34b8",
+      "word": "laser",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "862f9de1",
+      "word": "snow",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "382eb971",
+      "word": "school",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "f021ea6f",
+      "word": "table",
+      "type": "friend",
+      "is_top_friend": false
+    },
+    {
+      "id": "335182ad",
+      "word": "life",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "011cda9a",
+      "word": "seal",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "d7246227",
+      "word": "scale",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "a4c9cebb",
+      "word": "ball",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "d2bafd72",
+      "word": "string",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "d6e9b575",
+      "word": "watch",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "d6a9845b",
+      "word": "arm",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "28f5c59b",
+      "word": "bar",
+      "type": "foe",
+      "is_top_friend": null
+    },
+    {
+      "id": "3f57a043",
+      "word": "log",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "337af164",
+      "word": "compound",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "d0fac264",
+      "word": "torch",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "fbcc6119",
+      "word": "chocolate",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "1bd834e4",
+      "word": "boom",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "d52e3117",
+      "word": "paste",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "e26985d3",
+      "word": "berry",
+      "type": "neutral",
+      "is_top_friend": null
+    },
+    {
+      "id": "d131c2f8",
+      "word": "opera",
+      "type": "assassin",
+      "is_top_friend": null
+    }
+  ]
+}
